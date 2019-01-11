@@ -2,8 +2,9 @@ package mathutil_test
 
 import (
 	"fmt"
-	"github.com/nickwells/mathutil.mod/mathutil"
 	"testing"
+
+	"github.com/nickwells/mathutil.mod/mathutil"
 )
 
 func TestMinMaxOf(t *testing.T) {
@@ -40,21 +41,21 @@ func TestMinMaxOf(t *testing.T) {
 	}
 
 	for i, tc := range testCases {
-		testID := fmt.Sprintf("test %d: %s", i, tc.name)
+		tcID := fmt.Sprintf("test %d: %s", i, tc.name)
 
 		v, panicked, panicVal := panicSafeFloat64(mathutil.MinOf, tc.vals)
-		if panicOK(t, testID+": MinOf", panicked, tc.panicExp, panicVal) {
+		if panicOK(t, tcID+": MinOf", panicked, tc.panicExp, panicVal) {
 			if v != tc.expMin {
-				t.Logf("%s :\n", testID)
+				t.Logf("%s :\n", tcID)
 				t.Errorf("\t: min value should have been %v, not %v\n",
 					tc.expMin, v)
 			}
 		}
 
 		v, panicked, panicVal = panicSafeFloat64(mathutil.MaxOf, tc.vals)
-		if panicOK(t, testID+": MaxOf", panicked, tc.panicExp, panicVal) {
+		if panicOK(t, tcID+": MaxOf", panicked, tc.panicExp, panicVal) {
 			if v != tc.expMax {
-				t.Logf("%s :\n", testID)
+				t.Logf("%s :\n", tcID)
 				t.Errorf("\t: max value should have been %v, not %v\n",
 					tc.expMax, v)
 			}
@@ -97,21 +98,21 @@ func TestMinMaxOfInt(t *testing.T) {
 	}
 
 	for i, tc := range testCases {
-		testID := fmt.Sprintf("test %d: %s", i, tc.name)
+		tcID := fmt.Sprintf("test %d: %s", i, tc.name)
 
 		v, panicked, panicVal := panicSafeInt(mathutil.MinOfInt, tc.vals)
-		if panicOK(t, testID+": MinOfInt", panicked, tc.panicExp, panicVal) {
+		if panicOK(t, tcID+": MinOfInt", panicked, tc.panicExp, panicVal) {
 			if v != tc.expMin {
-				t.Logf("%s :\n", testID)
+				t.Logf("%s :\n", tcID)
 				t.Errorf("\t: min value should have been %v, not %v\n",
 					tc.expMin, v)
 			}
 		}
 
 		v, panicked, panicVal = panicSafeInt(mathutil.MaxOfInt, tc.vals)
-		if panicOK(t, testID+": MaxOfInt", panicked, tc.panicExp, panicVal) {
+		if panicOK(t, tcID+": MaxOfInt", panicked, tc.panicExp, panicVal) {
 			if v != tc.expMax {
-				t.Logf("%s :\n", testID)
+				t.Logf("%s :\n", tcID)
 				t.Errorf("\t: max value should have been %v, not %v\n",
 					tc.expMax, v)
 			}
@@ -120,7 +121,8 @@ func TestMinMaxOfInt(t *testing.T) {
 
 }
 
-// panicOK will check that the panic was as expected and return true if all was as expected, otherwise it will report the problem and return false
+// panicOK will check that the panic was as expected and return true if all
+// was as expected, otherwise it will report the problem and return false
 func panicOK(t *testing.T, name string, panicked, expected bool, pVal interface{}) bool {
 	t.Helper()
 
