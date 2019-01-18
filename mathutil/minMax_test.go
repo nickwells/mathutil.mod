@@ -46,8 +46,8 @@ func TestMinMaxOf(t *testing.T) {
 		v, panicked, panicVal := panicSafeFloat64(mathutil.MinOf, tc.vals)
 		if panicOK(t, tcID+": MinOf", panicked, tc.panicExp, panicVal) {
 			if v != tc.expMin {
-				t.Logf("%s :\n", tcID)
-				t.Errorf("\t: min value should have been %v, not %v\n",
+				t.Log(tcID)
+				t.Errorf("\t: min value should have been %v, not %v",
 					tc.expMin, v)
 			}
 		}
@@ -55,8 +55,8 @@ func TestMinMaxOf(t *testing.T) {
 		v, panicked, panicVal = panicSafeFloat64(mathutil.MaxOf, tc.vals)
 		if panicOK(t, tcID+": MaxOf", panicked, tc.panicExp, panicVal) {
 			if v != tc.expMax {
-				t.Logf("%s :\n", tcID)
-				t.Errorf("\t: max value should have been %v, not %v\n",
+				t.Log(tcID)
+				t.Errorf("\t: max value should have been %v, not %v",
 					tc.expMax, v)
 			}
 		}
@@ -103,8 +103,8 @@ func TestMinMaxOfInt(t *testing.T) {
 		v, panicked, panicVal := panicSafeInt(mathutil.MinOfInt, tc.vals)
 		if panicOK(t, tcID+": MinOfInt", panicked, tc.panicExp, panicVal) {
 			if v != tc.expMin {
-				t.Logf("%s :\n", tcID)
-				t.Errorf("\t: min value should have been %v, not %v\n",
+				t.Log(tcID)
+				t.Errorf("\t: min value should have been %v, not %v",
 					tc.expMin, v)
 			}
 		}
@@ -112,8 +112,8 @@ func TestMinMaxOfInt(t *testing.T) {
 		v, panicked, panicVal = panicSafeInt(mathutil.MaxOfInt, tc.vals)
 		if panicOK(t, tcID+": MaxOfInt", panicked, tc.panicExp, panicVal) {
 			if v != tc.expMax {
-				t.Logf("%s :\n", tcID)
-				t.Errorf("\t: max value should have been %v, not %v\n",
+				t.Log(tcID)
+				t.Errorf("\t: max value should have been %v, not %v",
 					tc.expMax, v)
 			}
 		}
@@ -127,14 +127,14 @@ func panicOK(t *testing.T, name string, panicked, expected bool, pVal interface{
 	t.Helper()
 
 	if panicked && !expected {
-		t.Logf("%s :\n", name)
-		t.Errorf("\t: unexpected panic: %v\n", pVal)
+		t.Log(name)
+		t.Errorf("\t: unexpected panic: %v", pVal)
 		return false
 	}
 
 	if !panicked && expected {
-		t.Logf("%s :\n", name)
-		t.Errorf("\t: panic expected but not seen\n")
+		t.Log(name)
+		t.Errorf("\t: panic expected but not seen")
 		return false
 	}
 	return true
