@@ -1,61 +1,59 @@
 package mathutil_test
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/nickwells/mathutil.mod/mathutil"
+	"github.com/nickwells/testhelper.mod/testhelper"
 )
 
 func TestMinMaxOf(t *testing.T) {
 	testCases := []struct {
-		name     string
+		testhelper.ID
 		vals     []float64
-		panicExp bool
 		expMin   float64
 		expMax   float64
+		panicExp bool
 	}{
 		{
-			name:   "all good - one val",
+			ID:     testhelper.MkID("all good - one val"),
 			vals:   []float64{1.0},
 			expMin: 1.0,
 			expMax: 1.0,
 		},
 		{
-			name:   "all good - multiple vals",
+			ID:     testhelper.MkID("all good - multiple vals"),
 			vals:   []float64{-1.0, 2.0, 3.0},
 			expMin: -1.0,
 			expMax: 3.0,
 		},
 		{
-			name:   "all good - multiple vals, out of order",
+			ID:     testhelper.MkID("all good - multiple vals, out of order"),
 			vals:   []float64{2.0, 3.0, -1.0},
 			expMin: -1.0,
 			expMax: 3.0,
 		},
 		{
-			name:     "panic expected",
+			ID:       testhelper.MkID("panic expected"),
 			vals:     []float64{},
 			panicExp: true,
 		},
 	}
 
-	for i, tc := range testCases {
-		tcID := fmt.Sprintf("test %d: %s", i, tc.name)
-
+	for _, tc := range testCases {
 		v, panicked, panicVal := panicSafeFloat64(mathutil.MinOf, tc.vals)
-		if panicOK(t, tcID+": MinOf", panicked, tc.panicExp, panicVal) {
+		if panicOK(t, tc.IDStr()+": MinOf", panicked, tc.panicExp, panicVal) {
 			if v != tc.expMin {
-				t.Log(tcID)
+				t.Log(tc.IDStr())
 				t.Errorf("\t: min value should have been %v, not %v",
 					tc.expMin, v)
 			}
 		}
 
 		v, panicked, panicVal = panicSafeFloat64(mathutil.MaxOf, tc.vals)
-		if panicOK(t, tcID+": MaxOf", panicked, tc.panicExp, panicVal) {
+		if panicOK(t, tc.IDStr()+": MaxOf", panicked, tc.panicExp, panicVal) {
 			if v != tc.expMax {
-				t.Log(tcID)
+				t.Log(tc.IDStr())
 				t.Errorf("\t: max value should have been %v, not %v",
 					tc.expMax, v)
 			}
@@ -66,53 +64,51 @@ func TestMinMaxOf(t *testing.T) {
 
 func TestMinMaxOfInt(t *testing.T) {
 	testCases := []struct {
-		name     string
+		testhelper.ID
 		vals     []int
 		panicExp bool
 		expMin   int
 		expMax   int
 	}{
 		{
-			name:   "all good - one val",
+			ID:     testhelper.MkID("all good - one val"),
 			vals:   []int{1},
 			expMin: 1,
 			expMax: 1,
 		},
 		{
-			name:   "all good - multiple vals",
+			ID:     testhelper.MkID("all good - multiple vals"),
 			vals:   []int{-1, 2, 3},
 			expMin: -1,
 			expMax: 3,
 		},
 		{
-			name:   "all good - multiple vals, out of order",
+			ID:     testhelper.MkID("all good - multiple vals, out of order"),
 			vals:   []int{2, 3, -1},
 			expMin: -1,
 			expMax: 3,
 		},
 		{
-			name:     "panic expected",
+			ID:       testhelper.MkID("panic expected"),
 			vals:     []int{},
 			panicExp: true,
 		},
 	}
 
-	for i, tc := range testCases {
-		tcID := fmt.Sprintf("test %d: %s", i, tc.name)
-
+	for _, tc := range testCases {
 		v, panicked, panicVal := panicSafeInt(mathutil.MinOfInt, tc.vals)
-		if panicOK(t, tcID+": MinOfInt", panicked, tc.panicExp, panicVal) {
+		if panicOK(t, tc.IDStr()+": MinOfInt", panicked, tc.panicExp, panicVal) {
 			if v != tc.expMin {
-				t.Log(tcID)
+				t.Log(tc.IDStr())
 				t.Errorf("\t: min value should have been %v, not %v",
 					tc.expMin, v)
 			}
 		}
 
 		v, panicked, panicVal = panicSafeInt(mathutil.MaxOfInt, tc.vals)
-		if panicOK(t, tcID+": MaxOfInt", panicked, tc.panicExp, panicVal) {
+		if panicOK(t, tc.IDStr()+": MaxOfInt", panicked, tc.panicExp, panicVal) {
 			if v != tc.expMax {
-				t.Log(tcID)
+				t.Log(tc.IDStr())
 				t.Errorf("\t: max value should have been %v, not %v",
 					tc.expMax, v)
 			}
