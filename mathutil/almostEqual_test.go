@@ -1,6 +1,7 @@
 package mathutil_test
 
 import (
+	"fmt"
 	"math"
 	"testing"
 
@@ -75,12 +76,11 @@ func TestAlmostEqual(t *testing.T) {
 
 	for _, tc := range testCases {
 		res := mathutil.AlmostEqual(tc.a, tc.b, tc.epsilon)
-		if res != tc.expResult {
-			t.Log(tc.IDStr())
-			t.Errorf("\t: AlmostEqual(%.9f, %.9f, %.9f)"+
-				" should have returned %v but didn't",
-				tc.a, tc.b, tc.epsilon, tc.expResult)
-		}
+		testhelper.CmpValBool(t,
+			tc.IDStr(),
+			fmt.Sprintf("result of AlmostEqual(%.7f, %.7f, %.9f)",
+				tc.a, tc.b, tc.epsilon),
+			res, tc.expResult)
 	}
 }
 
@@ -132,17 +132,29 @@ func TestWithinNPercent(t *testing.T) {
 			pct:       0.0,
 			expResult: true,
 		},
+		{
+			ID:        testhelper.MkID("identical magnitude, opposite signs"),
+			a:         100.0,
+			b:         -100.0,
+			pct:       1.0,
+			expResult: false,
+		},
+		{
+			ID:        testhelper.MkID("difference equals target %age"),
+			a:         100.0,
+			b:         99.9,
+			pct:       0.1,
+			expResult: true,
+		},
 	}
 
 	for _, tc := range testCases {
 		res := mathutil.WithinNPercent(tc.a, tc.b, tc.pct)
-		if res != tc.expResult {
-			t.Log(tc.IDStr())
-			t.Logf("\t: testing whether %11.7f is within %5.1f%% of %11.7f\n",
-				tc.a, tc.pct, tc.b)
-			t.Logf("\t: should have returned %v but didn't\n", tc.expResult)
-			t.Errorf("\t: Failed\n")
-		}
+		testhelper.CmpValBool(t,
+			tc.IDStr(),
+			fmt.Sprintf("result of WithinNPercent(%11.7f, %11.7f, %5.2f%%)",
+				tc.a, tc.b, tc.pct),
+			res, tc.expResult)
 	}
 
 }
