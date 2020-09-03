@@ -76,7 +76,7 @@ func TestAlmostEqual(t *testing.T) {
 
 	for _, tc := range testCases {
 		res := mathutil.AlmostEqual(tc.a, tc.b, tc.epsilon)
-		testhelper.CmpValBool(t,
+		testhelper.DiffBool(t,
 			tc.IDStr(),
 			fmt.Sprintf("result of AlmostEqual(%.7f, %.7f, %.9f)",
 				tc.a, tc.b, tc.epsilon),
@@ -150,7 +150,7 @@ func TestWithinNPercent(t *testing.T) {
 
 	for _, tc := range testCases {
 		res := mathutil.WithinNPercent(tc.a, tc.b, tc.pct)
-		testhelper.CmpValBool(t,
+		testhelper.DiffBool(t,
 			tc.IDStr(),
 			fmt.Sprintf("result of WithinNPercent(%11.7f, %11.7f, %5.2f%%)",
 				tc.a, tc.b, tc.pct),

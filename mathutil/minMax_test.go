@@ -43,20 +43,12 @@ func TestMinMaxOf(t *testing.T) {
 	for _, tc := range testCases {
 		v, panicked, panicVal := panicSafeFloat64(mathutil.MinOf, tc.vals)
 		if panicOK(t, tc.IDStr()+": MinOf", panicked, tc.panicExp, panicVal) {
-			if v != tc.expMin {
-				t.Log(tc.IDStr())
-				t.Errorf("\t: min value should have been %v, not %v",
-					tc.expMin, v)
-			}
+			testhelper.DiffFloat64(t, tc.IDStr(), "min", v, tc.expMin, 0.0)
 		}
 
 		v, panicked, panicVal = panicSafeFloat64(mathutil.MaxOf, tc.vals)
 		if panicOK(t, tc.IDStr()+": MaxOf", panicked, tc.panicExp, panicVal) {
-			if v != tc.expMax {
-				t.Log(tc.IDStr())
-				t.Errorf("\t: max value should have been %v, not %v",
-					tc.expMax, v)
-			}
+			testhelper.DiffFloat64(t, tc.IDStr(), "max", v, tc.expMax, 0.0)
 		}
 	}
 
@@ -98,20 +90,12 @@ func TestMinMaxOfInt(t *testing.T) {
 	for _, tc := range testCases {
 		v, panicked, panicVal := panicSafeInt(mathutil.MinOfInt, tc.vals)
 		if panicOK(t, tc.IDStr()+": MinOfInt", panicked, tc.panicExp, panicVal) {
-			if v != tc.expMin {
-				t.Log(tc.IDStr())
-				t.Errorf("\t: min value should have been %v, not %v",
-					tc.expMin, v)
-			}
+			testhelper.DiffInt(t, tc.IDStr(), "min", v, tc.expMin)
 		}
 
 		v, panicked, panicVal = panicSafeInt(mathutil.MaxOfInt, tc.vals)
 		if panicOK(t, tc.IDStr()+": MaxOfInt", panicked, tc.panicExp, panicVal) {
-			if v != tc.expMax {
-				t.Log(tc.IDStr())
-				t.Errorf("\t: max value should have been %v, not %v",
-					tc.expMax, v)
-			}
+			testhelper.DiffInt(t, tc.IDStr(), "max", v, tc.expMax)
 		}
 	}
 
