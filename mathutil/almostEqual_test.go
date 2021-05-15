@@ -156,5 +156,4 @@ func TestWithinNPercent(t *testing.T) {
 				tc.a, tc.b, tc.pct),
 			res, tc.expResult)
 	}
-
 }

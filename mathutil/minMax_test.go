@@ -51,7 +51,6 @@ func TestMinMaxOf(t *testing.T) {
 			testhelper.DiffFloat64(t, tc.IDStr(), "max", v, tc.expMax, 0.0)
 		}
 	}
-
 }
 
 func TestMinMaxOfInt(t *testing.T) {
@@ -98,7 +97,6 @@ func TestMinMaxOfInt(t *testing.T) {
 			testhelper.DiffInt(t, tc.IDStr(), "max", v, tc.expMax)
 		}
 	}
-
 }
 
 // panicOK will check that the panic was as expected and return true if all
