@@ -5,8 +5,8 @@ import (
 	"math"
 	"testing"
 
-	"github.com/nickwells/mathutil.mod/mathutil"
-	"github.com/nickwells/testhelper.mod/testhelper"
+	"github.com/nickwells/mathutil.mod/v2/mathutil"
+	"github.com/nickwells/testhelper.mod/v2/testhelper"
 )
 
 // TestAlmostEqual tests the AlmostEqual function

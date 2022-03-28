@@ -3,8 +3,9 @@ package mathutil_test
 import (
 	"testing"
 
-	"github.com/nickwells/mathutil.mod/mathutil"
-	"github.com/nickwells/testhelper.mod/testhelper"
+	"github.com/nickwells/mathutil.mod/v2/mathutil"
+	"github.com/nickwells/testhelper.mod/v2/testhelper"
+	"golang.org/x/exp/constraints"
 )
 
 func TestMinMaxOf(t *testing.T) {
@@ -41,14 +42,14 @@ func TestMinMaxOf(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		v, panicked, panicVal := panicSafeFloat64(mathutil.MinOf, tc.vals)
+		v, panicked, panicVal := panicSafeFloat(mathutil.MinOf[float64], tc.vals)
 		if panicOK(t, tc.IDStr()+": MinOf", panicked, tc.panicExp, panicVal) {
-			testhelper.DiffFloat64(t, tc.IDStr(), "min", v, tc.expMin, 0.0)
+			testhelper.DiffFloat(t, tc.IDStr(), "min", v, tc.expMin, 0.0)
 		}
 
-		v, panicked, panicVal = panicSafeFloat64(mathutil.MaxOf, tc.vals)
+		v, panicked, panicVal = panicSafeFloat(mathutil.MaxOf[float64], tc.vals)
 		if panicOK(t, tc.IDStr()+": MaxOf", panicked, tc.panicExp, panicVal) {
-			testhelper.DiffFloat64(t, tc.IDStr(), "max", v, tc.expMax, 0.0)
+			testhelper.DiffFloat(t, tc.IDStr(), "max", v, tc.expMax, 0.0)
 		}
 	}
 }
@@ -87,12 +88,12 @@ func TestMinMaxOfInt(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		v, panicked, panicVal := panicSafeInt(mathutil.MinOfInt, tc.vals)
+		v, panicked, panicVal := panicSafeInt(mathutil.MinOfInt[int], tc.vals)
 		if panicOK(t, tc.IDStr()+": MinOfInt", panicked, tc.panicExp, panicVal) {
 			testhelper.DiffInt(t, tc.IDStr(), "min", v, tc.expMin)
 		}
 
-		v, panicked, panicVal = panicSafeInt(mathutil.MaxOfInt, tc.vals)
+		v, panicked, panicVal = panicSafeInt(mathutil.MaxOfInt[int], tc.vals)
 		if panicOK(t, tc.IDStr()+": MaxOfInt", panicked, tc.panicExp, panicVal) {
 			testhelper.DiffInt(t, tc.IDStr(), "max", v, tc.expMax)
 		}
@@ -101,7 +102,7 @@ func TestMinMaxOfInt(t *testing.T) {
 
 // panicOK will check that the panic was as expected and return true if all
 // was as expected, otherwise it will report the problem and return false
-func panicOK(t *testing.T, name string, panicked, expected bool, pVal interface{}) bool {
+func panicOK(t *testing.T, name string, panicked, expected bool, pVal any) bool {
 	t.Helper()
 
 	if panicked && !expected {
@@ -121,7 +122,9 @@ func panicOK(t *testing.T, name string, panicked, expected bool, pVal interface{
 // panicSafeFloat64 calls the passed function with the supplied vals, it
 // recovers from any panic and returns whether or not a panic was detected
 // and the panic value
-func panicSafeFloat64(f func(...float64) float64, vals []float64) (result float64, panicked bool, panicVal interface{}) {
+func panicSafeFloat[F constraints.Float](f func(...F) F, vals []F) (
+	result F, panicked bool, panicVal any,
+) {
 	defer func() {
 		if r := recover(); r != nil {
 			panicked = true
@@ -136,7 +139,9 @@ func panicSafeFloat64(f func(...float64) float64, vals []float64) (result float6
 // panicSafeInt calls the passed function with the supplied vals, it
 // recovers from any panic and returns whether or not a panic was detected
 // and the panic value
-func panicSafeInt(f func(...int) int, vals []int) (result int, panicked bool, panicVal interface{}) {
+func panicSafeInt(f func(...int) int, vals []int) (
+	result int, panicked bool, panicVal any,
+) {
 	defer func() {
 		if r := recover(); r != nil {
 			panicked = true

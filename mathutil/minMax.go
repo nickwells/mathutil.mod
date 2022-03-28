@@ -1,30 +1,34 @@
 package mathutil
 
-import "math"
+import (
+	"math"
+
+	"golang.org/x/exp/constraints"
+)
 
 // MinOf returns the lesser of the slice of values; it will panic if the
 // slice is empty
-func MinOf(vals ...float64) float64 {
-	min := vals[0]
+func MinOf[F constraints.Float](vals ...F) F {
+	min := float64(vals[0])
 	for _, v := range vals[1:] {
-		min = math.Min(min, v)
+		min = math.Min(min, float64(v))
 	}
-	return min
+	return F(min)
 }
 
 // MaxOf returns the greater of the slice of values; it will panic if the
 // slice is empty
-func MaxOf(vals ...float64) float64 {
-	max := vals[0]
+func MaxOf[F constraints.Float](vals ...F) F {
+	max := float64(vals[0])
 	for _, v := range vals[1:] {
-		max = math.Max(max, v)
+		max = math.Max(max, float64(v))
 	}
-	return max
+	return F(max)
 }
 
 // MinOfInt returns the lesser of the slice of values; it will panic if the
 // slice is empty
-func MinOfInt(vals ...int) int {
+func MinOfInt[I constraints.Integer](vals ...I) I {
 	min := vals[0]
 	for _, v := range vals[1:] {
 		if v < min {
@@ -36,7 +40,7 @@ func MinOfInt(vals ...int) int {
 
 // MaxOfInt returns the greater of the slice of values; it will panic if the
 // slice is empty
-func MaxOfInt(vals ...int) int {
+func MaxOfInt[I constraints.Integer](vals ...I) I {
 	max := vals[0]
 	for _, v := range vals[1:] {
 		if v > max {
