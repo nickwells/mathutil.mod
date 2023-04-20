@@ -19,29 +19,55 @@ func TestDigits(t *testing.T) {
 			expDigits: 1,
 		},
 		{
-			ID:        testhelper.MkID("positive, small"),
+			ID:        testhelper.MkID("small"),
 			v:         1,
 			expDigits: 1,
 		},
 		{
-			ID:        testhelper.MkID("positive, large"),
+			ID:        testhelper.MkID("large"),
 			v:         9999999,
 			expDigits: 7,
-		},
-		{
-			ID:        testhelper.MkID("negative, small"),
-			v:         -1,
-			expDigits: 2,
-		},
-		{
-			ID:        testhelper.MkID("negative, large"),
-			v:         -9999999,
-			expDigits: 8,
 		},
 	}
 
 	for _, tc := range testCases {
 		digits := mathutil.Digits(tc.v)
+		testhelper.DiffInt(
+			t, tc.IDStr(), "digits", digits, tc.expDigits)
+		if tc.v == 0 {
+			continue
+		}
+		digits = mathutil.Digits(tc.v * -1)
+		testhelper.DiffInt(
+			t, tc.IDStr()+" -ve", "digits", digits, tc.expDigits+1)
+	}
+}
+
+func TestDigitsUnsigned(t *testing.T) {
+	testCases := []struct {
+		testhelper.ID
+		v         uint64
+		expDigits int
+	}{
+		{
+			ID:        testhelper.MkID("zero"),
+			v:         0,
+			expDigits: 1,
+		},
+		{
+			ID:        testhelper.MkID("small"),
+			v:         1,
+			expDigits: 1,
+		},
+		{
+			ID:        testhelper.MkID("large"),
+			v:         9999999,
+			expDigits: 7,
+		},
+	}
+
+	for _, tc := range testCases {
+		digits := mathutil.DigitsUnsigned(tc.v)
 		testhelper.DiffInt(t, tc.IDStr(), "digits", digits, tc.expDigits)
 	}
 }
@@ -115,12 +141,15 @@ func TestDigitsInBase(t *testing.T) {
 			digits := mathutil.DigitsInBase(tc.v, tc.base)
 			testhelper.DiffInt(t, tc.IDStr(), "digits", digits, tc.expDigits)
 
-			if tc.v == 0 {
-				return
-			}
+			if tc.v > 0 {
+				digits = mathutil.DigitsInBaseUnsigned(uint64(tc.v), tc.base)
+				testhelper.DiffInt(
+					t, tc.IDStr(), "digits", digits, tc.expDigits)
 
-			digits = mathutil.DigitsInBase(tc.v*-1.0, tc.base)
-			testhelper.DiffInt(t, tc.IDStr(), "digits", digits, tc.expDigits+1)
+				digits = mathutil.DigitsInBase(tc.v*-1.0, tc.base)
+				testhelper.DiffInt(
+					t, tc.IDStr(), "digits", digits, tc.expDigits+1)
+			}
 		})
 		testhelper.CheckExpPanic(t, panicked, panicVal, tc)
 	}

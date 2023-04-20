@@ -1,5 +1,7 @@
 package mathutil
 
+import "golang.org/x/exp/constraints"
+
 // FmtValsForSigFigs returns the width and precision needed to print v to at
 // least sf significant figures. Note that sf must be greater than 0, a panic
 // is generated if not.
@@ -10,7 +12,9 @@ package mathutil
 // few digits will be shown. This last caveat is as a result of the way
 // floating point numbers are represented by computers and how Go handles
 // constants. For instance 0.1*0.1 is not equal to 0.01.
-func FmtValsForSigFigs(sf uint8, v float64) (width, precision int) {
+func FmtValsForSigFigs[T constraints.Float](sf uint8, v T) (
+	width, precision int,
+) {
 	if sf == 0 {
 		panic("the number of significant figures must be greater than zero")
 	}
@@ -38,12 +42,12 @@ func FmtValsForSigFigs(sf uint8, v float64) (width, precision int) {
 
 		extraWidth++ // for the "."
 		precision = 1
-		for p := 0.1; v < p && p > minVal; p *= 0.1 {
+		for p := T(0.1); v < p && p > minVal; p *= 0.1 {
 			precision++
 		}
 		precision += int(sf) - 1
 	} else {
-		for p := 10.; v >= p; p *= 10. {
+		for p := T(10.0); v >= p; p *= 10 {
 			digitsPreDP++
 		}
 		if digitsPreDP < int(sf) {
@@ -61,7 +65,7 @@ func FmtValsForSigFigs(sf uint8, v float64) (width, precision int) {
 // before the point and 3 digits after the point, with a width of 7 and a
 // precision of 3. Note that sf must be greater than 0, a panic is generated
 // if not.
-func FmtValsForSigFigsMulti(sf uint8, v float64, vals ...float64) (
+func FmtValsForSigFigsMulti[T constraints.Float](sf uint8, v T, vals ...T) (
 	width, precision int,
 ) {
 	wid, prec := FmtValsForSigFigs(sf, v)
