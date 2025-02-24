@@ -43,7 +43,8 @@ func RationalApproximationByFareysAlgo(v, accuracy float64) (Rational, error) {
 	if err := checkRationalApproxParams(v, accuracy); err != nil {
 		return r, err
 	}
-	accuracy /= 100.0
+
+	accuracy = FromPercent(accuracy)
 
 	vAbs, sign := normaliseRationalApproxVal(v)
 
@@ -185,7 +186,8 @@ func RationalApproximation(v, accuracy float64) (Rational, error) {
 	if err := checkRationalApproxParams(v, accuracy); err != nil {
 		return r, err
 	}
-	accuracy /= 100.0
+
+	accuracy = FromPercent(accuracy)
 
 	vAbs, sign := normaliseRationalApproxVal(v)
 

@@ -24,7 +24,8 @@ func WithinNPercent(a, b, epsilon float64) bool {
 		return false
 	}
 
-	pctDiff := 100.0 * math.Abs(absA-absB) / math.Max(absA, absB)
+	pctDiff := ToPercent(math.Abs(absA-absB) / math.Max(absA, absB))
+
 	return pctDiff <= epsilon
 }
 
