@@ -7,22 +7,28 @@ import (
 	"golang.org/x/exp/constraints"
 )
 
+const (
+	base10  = 10
+	minBase = 2
+)
+
 // Digits returns the characters needed to print the value (the number of
 // digits plus potentially a sign marker)
 func Digits[T constraints.Signed](v T) int {
-	return DigitsInBase(v, 10)
+	return DigitsInBase(v, base10)
 }
 
 // DigitsUnsigned returns the characters needed to print the value
 func DigitsUnsigned[T constraints.Unsigned](v T) int {
-	return DigitsInBaseUnsigned(v, 10)
+	return DigitsInBaseUnsigned(v, base10)
 }
 
 // DigitsInBase returns the characters needed to print the value v in base
 // b. Note that the base must be 2 or more; if not a panic is generated.
 func DigitsInBase[T constraints.Signed](v T, b uint) int {
-	if b < 2 {
-		panic(fmt.Sprintf("Invalid base (%d), the base must be at least 2", b))
+	if b < minBase {
+		panic(fmt.Sprintf("Invalid base (%d), the base must be at least %d",
+			b, minBase))
 	}
 
 	if v == 0 {
@@ -36,9 +42,10 @@ func DigitsInBase[T constraints.Signed](v T, b uint) int {
 	}
 
 	logConv := 1.0
-	if b != 10 {
+	if b != base10 {
 		logConv = math.Log10(float64(b))
 	}
+
 	d += int(math.Ceil(math.Log10(float64(v+1)) / logConv))
 
 	return d
@@ -48,8 +55,9 @@ func DigitsInBase[T constraints.Signed](v T, b uint) int {
 // (of an unsigned integer type) in base b. Note that the base must be 2 or
 // more; if not a panic is generated.
 func DigitsInBaseUnsigned[T constraints.Unsigned](v T, b uint) int {
-	if b < 2 {
-		panic(fmt.Sprintf("Invalid base (%d), the base must be at least 2", b))
+	if b < minBase {
+		panic(fmt.Sprintf("Invalid base (%d), the base must be at least %d",
+			b, minBase))
 	}
 
 	if v == 0 {
@@ -57,8 +65,9 @@ func DigitsInBaseUnsigned[T constraints.Unsigned](v T, b uint) int {
 	}
 
 	logConv := 1.0
-	if b != 10 {
+	if b != base10 {
 		logConv = math.Log10(float64(b))
 	}
+
 	return int(math.Ceil(math.Log10(float64(v+1)) / logConv))
 }

@@ -27,14 +27,14 @@ func TestMediant(t *testing.T) {
 			lower:  Rational{bigVal, bigVal + 1},
 			upper:  Rational{bigVal + 1, bigVal + 2},
 			expMed: Rational{0, 1},
-			ExpErr: testhelper.MkExpErr(errNumerTooBig.Error()),
+			ExpErr: testhelper.MkExpErr(errNumeratorTooBig.Error()),
 		},
 		{
 			ID:     testhelper.MkID("denominator overflow"),
 			lower:  Rational{1, bigVal + 2},
 			upper:  Rational{1, bigVal + 1},
 			expMed: Rational{0, 1},
-			ExpErr: testhelper.MkExpErr(errDenomTooBig.Error()),
+			ExpErr: testhelper.MkExpErr(errDenominatorTooBig.Error()),
 		},
 	}
 

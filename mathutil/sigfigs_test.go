@@ -110,6 +110,7 @@ func TestDigitsForSigFigs(t *testing.T) {
 			if tc.v == 0.0 {
 				return
 			}
+
 			w, p = mathutil.FmtValsForSigFigs(tc.sigFigs, tc.v*-1.0)
 			testhelper.DiffInt(t,
 				tc.IDStr()+" (-ve value)", "width", w, tc.expWidth+1)

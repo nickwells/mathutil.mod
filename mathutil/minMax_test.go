@@ -108,14 +108,17 @@ func panicOK(t *testing.T, name string, panicked, expected bool, pVal any) bool 
 	if panicked && !expected {
 		t.Log(name)
 		t.Errorf("\t: unexpected panic: %v", pVal)
+
 		return false
 	}
 
 	if !panicked && expected {
 		t.Log(name)
 		t.Errorf("\t: panic expected but not seen")
+
 		return false
 	}
+
 	return true
 }
 
@@ -133,6 +136,7 @@ func panicSafeFloat[F constraints.Float](f func(...F) F, vals []F) (
 	}()
 
 	result = f(vals...)
+
 	return
 }
 
@@ -150,5 +154,6 @@ func panicSafeInt(f func(...int) int, vals []int) (
 	}()
 
 	result = f(vals...)
+
 	return
 }

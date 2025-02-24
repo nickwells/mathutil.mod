@@ -32,11 +32,12 @@ func TestDigits(t *testing.T) {
 
 	for _, tc := range testCases {
 		digits := mathutil.Digits(tc.v)
-		testhelper.DiffInt(
-			t, tc.IDStr(), "digits", digits, tc.expDigits)
+		testhelper.DiffInt(t, tc.IDStr(), "digits", digits, tc.expDigits)
+
 		if tc.v == 0 {
 			continue
 		}
+
 		digits = mathutil.Digits(tc.v * -1)
 		testhelper.DiffInt(
 			t, tc.IDStr()+" -ve", "digits", digits, tc.expDigits+1)

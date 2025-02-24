@@ -7,8 +7,8 @@ import (
 )
 
 var (
-	errNumerTooBig = errors.New("overflow: the numerator is too big")
-	errDenomTooBig = errors.New("overflow: the denominator is too big")
+	errNumeratorTooBig   = errors.New("overflow: the numerator is too big")
+	errDenominatorTooBig = errors.New("overflow: the denominator is too big")
 )
 
 // Rational represents a rational number. It is used as the return value of
@@ -52,11 +52,13 @@ func (r Rational) Proximity(v float64) float64 {
 // of the caller.
 func mediant(lower, upper Rational) (Rational, error) {
 	if math.MaxInt64-lower.N < upper.N {
-		return Rational{0, 1}, errNumerTooBig
+		return Rational{0, 1}, errNumeratorTooBig
 	}
+
 	if math.MaxInt64-lower.D < upper.D {
-		return Rational{0, 1}, errDenomTooBig
+		return Rational{0, 1}, errDenominatorTooBig
 	}
+
 	return Rational{N: lower.N + upper.N, D: lower.D + upper.D}, nil
 }
 

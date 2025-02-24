@@ -50,6 +50,7 @@ func RationalApproximationByFareysAlgo(v, accuracy float64) (Rational, error) {
 
 	intPart := math.Floor(vAbs)
 	fracPart := vAbs - intPart
+
 	if fracPart == 0 {
 		return Rational{int64(intPart) * sign, 1}, nil
 	}
@@ -59,11 +60,12 @@ func RationalApproximationByFareysAlgo(v, accuracy float64) (Rational, error) {
 		upper = Rational{N: 1, D: 1}
 	)
 
-	for i := 0; i < MaxFareyTrials; i++ {
+	for range MaxFareyTrials {
 		mediant, err := mediant(lower, upper)
 		if err != nil {
 			return r, errors.New(err.Error() + raErrSuffix)
 		}
+
 		r, err = SetRational(intPart, mediant.N, mediant.D, sign)
 		if err != nil {
 			return r, err
@@ -88,7 +90,9 @@ func RationalApproximationByFareysAlgo(v, accuracy float64) (Rational, error) {
 // together with a sign value
 func normaliseRationalApproxVal(v float64) (float64, int64) {
 	vAbs := math.Abs(v)
+
 	var sign int64 = 1
+
 	if math.Signbit(v) {
 		sign = -1
 	}
@@ -104,6 +108,7 @@ func continuedFraction(v float64, maxVals uint) ([]int64, error) {
 		math.IsInf(v, -1) {
 		return nil, errors.New("the value is infinite")
 	}
+
 	if math.IsNaN(v) {
 		return nil, errors.New("the value is not a number")
 	}
@@ -116,11 +121,15 @@ func continuedFraction(v float64, maxVals uint) ([]int64, error) {
 			float64(int64(intPart)) != intPart {
 			return cf, errors.New("continued fraction value too big")
 		}
+
 		cf = append(cf, int64(intPart))
+
 		v -= intPart
+
 		if v <= 0 {
 			break
 		}
+
 		v = 1 / v
 	}
 
@@ -132,6 +141,7 @@ func checkRationalAccuracy(accuracy float64) error {
 	if accuracy <= 0.0 || accuracy >= 100.0 {
 		return errBadAccuracy
 	}
+
 	return nil
 }
 
@@ -142,13 +152,16 @@ func checkRationalTargetVal(v float64) error {
 		math.IsInf(v, -1) {
 		return errIsInf
 	}
+
 	if math.IsNaN(v) {
 		return errIsNaN
 	}
+
 	if v >= float64(math.MaxInt64) ||
 		v < float64(math.MinInt64) {
 		return errTooBig
 	}
+
 	return nil
 }
 
@@ -173,15 +186,17 @@ func checkRationalApproxParams(v float64, accuracy float64) error {
 // represented in this way (including values that are too big) and a non-nil
 // error is returned in this case.
 //
-// The accuracy must be less than 100 and greater than zero.
+// The accuracy is expressed as a percentage and must be less than 100 and
+// greater than zero.
 //
 // This may generate different approximations from the
 // RationalApproximationByFareysAlgo func.
 func RationalApproximation(v, accuracy float64) (Rational, error) {
-	var r Rational
 	if v == 0 {
 		return Rational{N: 0, D: 1}, nil
 	}
+
+	var r Rational
 
 	if err := checkRationalApproxParams(v, accuracy); err != nil {
 		return r, err
@@ -199,20 +214,27 @@ func RationalApproximation(v, accuracy float64) (Rational, error) {
 			return r, errors.New(err.Error() + raErrSuffix)
 		}
 
-		r = Rational{N: 1, D: cf[len(cf)-1]}
-		for i := len(cf) - 2; i >= 0; i-- {
-			if math.MaxInt64/r.D < cf[i] { // restart, ignoring the end values
-				r = Rational{N: 1, D: cf[i]}
+		idxEnd := len(cf) - 1
+		r = Rational{N: 1, D: cf[idxEnd]}
+		idxEnd--
+
+		for ; idxEnd >= 0; idxEnd-- {
+			if math.MaxInt64/r.D < cf[idxEnd] { // restart, ignoring end values
+				r = Rational{N: 1, D: cf[idxEnd]}
 				continue
 			}
-			p := cf[i] * r.D
-			if math.MaxInt64-p < r.N { // restart, ignoring the end values
-				r = Rational{N: 1, D: cf[i]}
+
+			p := cf[idxEnd] * r.D
+
+			if math.MaxInt64-p < r.N { // restart, ignoring end values
+				r = Rational{N: 1, D: cf[idxEnd]}
 				continue
 			}
+
 			r.N += p
 			r = r.Invert()
 		}
+
 		r = r.Invert() // undo the last swap
 
 		r.N *= sign
@@ -220,5 +242,6 @@ func RationalApproximation(v, accuracy float64) (Rational, error) {
 			return r, nil
 		}
 	}
+
 	return r, errInaccurate
 }

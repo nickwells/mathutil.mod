@@ -22,16 +22,19 @@ func FmtValsForSigFigs[T constraints.Float](sf uint8, v T) (
 	if v == 0.0 {
 		width = 1
 		precision = 0
+
 		if sf > 1 {
 			precision = int(sf) - 1
 			width++ // for the "."
 			width += precision
 		}
+
 		return
 	}
 
 	digitsPreDP := 1 // always at least 1 digit before the decimal point
 	extraWidth := 0
+
 	if v < 0 {
 		extraWidth = 1 // for the minus sign
 		v *= -1
@@ -42,20 +45,25 @@ func FmtValsForSigFigs[T constraints.Float](sf uint8, v T) (
 
 		extraWidth++ // for the "."
 		precision = 1
-		for p := T(0.1); v < p && p > minVal; p *= 0.1 {
+
+		for p := T(0.1); v < p && p > minVal; p *= 0.1 { //nolint:mnd
 			precision++
 		}
+
 		precision += int(sf) - 1
 	} else {
-		for p := T(10.0); v >= p; p *= 10 {
+		for p := T(10.0); v >= p; p *= 10 { //nolint:mnd
 			digitsPreDP++
 		}
+
 		if digitsPreDP < int(sf) {
 			extraWidth++ // for the "."
 			precision = int(sf) - digitsPreDP
 		}
 	}
+
 	width = digitsPreDP + precision + extraWidth
+
 	return
 }
 
@@ -72,6 +80,7 @@ func FmtValsForSigFigsMulti[T constraints.Float](sf uint8, v T, vals ...T) (
 	precision = prec
 
 	width = digitsBeforePoint(wid, prec)
+
 	for _, val := range vals {
 		wid, prec = FmtValsForSigFigs(sf, val)
 		if prec > precision {
@@ -88,6 +97,7 @@ func FmtValsForSigFigsMulti[T constraints.Float](sf uint8, v T, vals ...T) (
 	if precision > 0 {
 		width++
 	}
+
 	return
 }
 
@@ -98,5 +108,6 @@ func digitsBeforePoint(width, precision int) int {
 	if precision > 0 {
 		before-- // for the "."
 	}
+
 	return before
 }
