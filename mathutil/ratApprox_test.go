@@ -141,7 +141,7 @@ func TestRationalApproximation(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		t.Run(tc.ID.Name, func(t *testing.T) {
+		t.Run(tc.IDStr(), func(t *testing.T) {
 			r, err := RationalApproximation(tc.v, tc.accuracy)
 			testhelper.DiffInt[int64](t, tc.IDStr(),
 				"Numerator", r.N, tc.expRat.N)
@@ -288,7 +288,7 @@ func TestRationalApproximationByFareysAlgo(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		t.Run(tc.ID.Name, func(t *testing.T) {
+		t.Run(tc.IDStr(), func(t *testing.T) {
 			r, err := RationalApproximationByFareysAlgo(tc.v, tc.accuracy)
 			testhelper.DiffInt[int64](t, tc.IDStr(),
 				"Numerator", r.N, tc.expRat.N)
@@ -360,7 +360,7 @@ func TestContinuedFraction(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		t.Run(tc.ID.Name, func(t *testing.T) {
+		t.Run(tc.IDStr(), func(t *testing.T) {
 			vals, err := continuedFraction(tc.v, tc.maxVals)
 			testhelper.DiffSlice[int64](t, tc.IDStr(), "vals", vals, tc.expVals)
 			testhelper.CheckExpErr(t, err, tc)
