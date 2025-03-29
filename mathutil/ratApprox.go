@@ -21,7 +21,8 @@ var (
 	errIsInf       = errors.New("the value is infinite" + raErrSuffix)
 	errIsNaN       = errors.New("the value is not a number" + raErrSuffix)
 	errBadAccuracy = errors.New("accuracy must be >0 and <100" + raErrSuffix)
-	errConvTooSlow = errors.New("Farey seq converges too slowly" + raErrSuffix)
+	errConvTooSlow = errors.New("the Farey sequence converges too slowly" +
+		raErrSuffix)
 )
 
 // RationalApproximationByFareysAlgo returns a Rational approximation for v.
@@ -36,7 +37,8 @@ var (
 //
 // Note that this will try at most MaxFareyTrials times before giving up. It
 // can be very slow to converge to certain values, particularly those close
-// to zero or one. If an error is returned the
+// to zero or one. If an error is returned the associated value is not
+// guaranteed to meet the accuracy requirements and should not be used.
 func RationalApproximationByFareysAlgo(v, accuracy float64) (Rational, error) {
 	var r Rational
 
