@@ -41,10 +41,8 @@ func TestMediant(t *testing.T) {
 	for _, tc := range testCases {
 		t.Run(tc.IDStr(), func(t *testing.T) {
 			m, err := mediant(tc.lower, tc.upper)
-			testhelper.DiffInt[int64](t, tc.IDStr(), "Numerator",
-				m.N, tc.expMed.N)
-			testhelper.DiffInt[int64](t, tc.IDStr(), "Denominator",
-				m.D, tc.expMed.D)
+			testhelper.DiffInt(t, tc.IDStr(), "Numerator", m.N, tc.expMed.N)
+			testhelper.DiffInt(t, tc.IDStr(), "Denominator", m.D, tc.expMed.D)
 			testhelper.CheckExpErr(t, err, tc)
 		})
 	}

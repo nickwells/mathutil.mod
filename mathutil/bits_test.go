@@ -57,6 +57,6 @@ func TestBitsInType(t *testing.T) {
 
 	for _, tc := range testCases {
 		b := mathutil.BitsInType(tc.v)
-		testhelper.DiffInt[int](t, tc.IDStr(), "bits", b, tc.expBits)
+		testhelper.DiffInt(t, tc.IDStr(), "bits", b, tc.expBits)
 	}
 }
