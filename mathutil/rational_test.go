@@ -9,6 +9,7 @@ import (
 
 func TestMediant(t *testing.T) {
 	const bigVal = 3 * math.MaxInt64 / 4
+
 	testCases := []struct {
 		testhelper.ID
 		lower  Rational

@@ -297,6 +297,7 @@ func TestRationalApproximationByFareysAlgo(t *testing.T) {
 
 func TestContinuedFraction(t *testing.T) {
 	const errText = "continued fraction value too big"
+
 	testCases := []struct {
 		testhelper.ID
 		v       float64
