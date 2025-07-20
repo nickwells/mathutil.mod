@@ -39,7 +39,7 @@ func Roughly[F constraints.Float](v, accuracy F) F {
 
 	maxDiff := newV * accuracy
 	precision := math.Floor(math.Log10(float64(maxDiff))) - 1
-	scale := math.Pow(base10, precision)
+	scale := math.Pow10(int(precision))
 	newV /= F(scale)
 	maxDiff /= F(scale)
 
