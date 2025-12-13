@@ -117,7 +117,7 @@ func continuedFraction(v float64, maxVals uint) ([]int64, error) {
 
 	cf := make([]int64, 0, maxVals)
 
-	for i := uint(0); i < maxVals; i++ {
+	for range maxVals {
 		intPart := math.Floor(v)
 		if intPart > float64(math.MaxInt64) ||
 			float64(int64(intPart)) != intPart {
