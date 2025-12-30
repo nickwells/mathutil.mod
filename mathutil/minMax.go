@@ -33,9 +33,7 @@ func MaxOf[F constraints.Float](vals ...F) F {
 func MinOfInt[I constraints.Integer](vals ...I) I {
 	m := vals[0]
 	for _, v := range vals[1:] {
-		if v < m {
-			m = v
-		}
+		m = min(v, m)
 	}
 
 	return m
@@ -46,9 +44,7 @@ func MinOfInt[I constraints.Integer](vals ...I) I {
 func MaxOfInt[I constraints.Integer](vals ...I) I {
 	m := vals[0]
 	for _, v := range vals[1:] {
-		if v > m {
-			m = v
-		}
+		m = max(v, m)
 	}
 
 	return m

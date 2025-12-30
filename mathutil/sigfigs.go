@@ -83,14 +83,10 @@ func FmtValsForSigFigsMulti[T constraints.Float](sf uint8, v T, vals ...T) (
 
 	for _, val := range vals {
 		wid, prec = FmtValsForSigFigs(sf, val)
-		if prec > precision {
-			precision = prec
-		}
+		precision = max(prec, precision)
 
 		dbp := digitsBeforePoint(wid, prec)
-		if dbp > width {
-			width = dbp
-		}
+		width = max(dbp, width)
 	}
 
 	width += precision
