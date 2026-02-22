@@ -11,5 +11,5 @@ func BitsInType(v any) int {
 		return 0
 	}
 
-	return int(vt.Size() * bitsInByte)
+	return int(vt.Size() * bitsInByte) //nolint:gosec
 }
