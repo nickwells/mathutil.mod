@@ -7,7 +7,9 @@ import (
 )
 
 // MinOf returns the lesser of the slice of values; it will panic if the
-// slice is empty
+// slice is empty.
+//
+// Deprecated: use the builtin min function
 func MinOf[F constraints.Float](vals ...F) F {
 	m := float64(vals[0])
 	for _, v := range vals[1:] {
@@ -18,7 +20,9 @@ func MinOf[F constraints.Float](vals ...F) F {
 }
 
 // MaxOf returns the greater of the slice of values; it will panic if the
-// slice is empty
+// slice is empty.
+//
+// Deprecated: use the builtin max function
 func MaxOf[F constraints.Float](vals ...F) F {
 	m := float64(vals[0])
 	for _, v := range vals[1:] {
@@ -29,7 +33,9 @@ func MaxOf[F constraints.Float](vals ...F) F {
 }
 
 // MinOfInt returns the lesser of the slice of values; it will panic if the
-// slice is empty
+// slice is empty.
+//
+// Deprecated: use the builtin min function
 func MinOfInt[I constraints.Integer](vals ...I) I {
 	m := vals[0]
 	for _, v := range vals[1:] {
@@ -40,7 +46,9 @@ func MinOfInt[I constraints.Integer](vals ...I) I {
 }
 
 // MaxOfInt returns the greater of the slice of values; it will panic if the
-// slice is empty
+// slice is empty.
+//
+// Deprecated: use the builtin max function
 func MaxOfInt[I constraints.Integer](vals ...I) I {
 	m := vals[0]
 	for _, v := range vals[1:] {
